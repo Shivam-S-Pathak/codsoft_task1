@@ -1,0 +1,12 @@
+body{
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgb(240, 240, 240);
+}
+#root {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+
+}

@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.addBtn {
+  font-size: 4rem;
+  cursor: pointer;
+}
+.foot {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.userInput {
+  transition: all 0.3s ease;
+}
+.show {
+  display:block;
+}
+.hide {
+  display: none;
+}
+.UserText {
+  width: 19rem;
+  height: 4rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+
+  padding-left: 1rem;
+}
+.UserDate {
+  width: 10rem;
+  height: 4rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0 0.5rem 0 0.5rem;
+}
+.UserTime {
+  width: 10rem;
+  height: 4rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0 0.5rem 0 0.5rem;
+}
+.saveBtn {
+  width: 7rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  background-color: blue;
+border: none;
+  cursor: pointer;
+}
+.saveBtnDisabled{
+  width: 7rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  background-color: rgb(148, 148, 255);
+ border: none;
+}
