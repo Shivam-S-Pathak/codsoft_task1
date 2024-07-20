@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdModeEdit } from "react-icons/md";
 import { IoMdCheckboxOutline } from "react-icons/io";
-
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
-
 import styles from "./todoItems.module.css";
 
 const TodoItem = (props) => {
   const [isChecked, setIsChecked] = useState(false);
+
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -15,17 +14,18 @@ const TodoItem = (props) => {
   const handleDelete = (n) => {
     const items = props.todos;
     const newTodos = [...items];
-    newTodos.splice(props.index, 1);
+    newTodos.splice(n, 1);
     props.setTodos([...newTodos]);
   };
 
   return (
     <>
-      <div className={styles.mainContainer}>
-        <div
-          className={`${styles.todoItemsContainer} 
-        } ${isChecked ? styles.todoItemsContainerChecked : ""}`}
-        >
+      <article
+        className={`${styles.todoItemsContainer} ${
+          isChecked ? styles.todoItemsContainerChecked : ""
+        }`}
+      >
+        <div className={styles.discription}>
           {isChecked ? (
             <IoMdCheckboxOutline
               className={styles.checkBox}
@@ -43,18 +43,26 @@ const TodoItem = (props) => {
           >
             {props.todoText}
           </p>
-          <p
-            className={`${styles.dateNtime} ${isChecked ? styles.checked : ""}`}
-          >
-            <span>{props.todoDate}</span>
-            <span>{props.todoTime}</span>
+          <p className={styles.dateNtime}>
+            {props.todoDate} {props.todoTime}
           </p>
         </div>
-
-        <button className={`${styles.deleteBtn}`} onClick={handleDelete}>
-          <MdDeleteForever className={styles.deleteIcon} />
-        </button>
-      </div>
+        <div className={styles.buttons}>
+          <button
+            className={`${styles.editBtn}`}
+            onClick={isChecked ? " " : () => props.startEditing(props.index)}
+            title="Edit to-do"
+          >
+            <MdModeEdit className={styles.editIcon} />
+          </button>
+          <button
+            className={`${styles.deleteBtn}`}
+            onClick={() => handleDelete(props.index)}
+          >
+            <MdDeleteForever className={styles.deleteIcon} />
+          </button>
+        </div>
+      </article>
     </>
   );
 };

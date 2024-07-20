@@ -1,5 +1,6 @@
 import styles from "./addTodo.module.css";
 import { RiAddCircleFill } from "react-icons/ri";
+
 const Addtodo = (props) => {
   return (
     <>
@@ -43,19 +44,23 @@ const Addtodo = (props) => {
             onChange={props.handleTimeChange}
             required
           />
+
           {props.isFormValid ? (
             <button
               className={`${styles.saveBtn}`}
-              onClick={props.handleSubmit}
+              onClick={
+                props.isEditing ? props.handleSaveEdit : props.handleSubmit
+              }
             >
-              save
+              {props.isEditing ? "Save Edit" : "Save"}
             </button>
           ) : (
-            <button className={`${styles.saveBtnDisabled}`}>save</button>
+            <button className={`${styles.saveBtnDisabled}`}>Save</button>
           )}
         </div>
       </div>
     </>
   );
 };
+
 export default Addtodo;

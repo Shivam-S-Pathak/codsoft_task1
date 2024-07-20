@@ -1,18 +1,21 @@
 import styles from "./todoApp.module.css";
 import TodoItem from "./todoItems";
 import Addtodo from "./addTodo";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 
 const TodoApp = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isShowing, setIsShowing] = useState(false);
-  const handleClick = () => {
-    setIsShowing(!isShowing);
-  };
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const [todoText, setTodoText] = useState("");
   const [todoTime, setTodoTime] = useState("");
   const [todoDate, setTodoDate] = useState("");
   const [todos, setTodos] = useState([]);
+
+  const handleClick = () => {
+    setIsShowing(!isShowing);
+  };
 
   const handleSubmit = () => {
     setTodos([...todos, { todoText, todoTime, todoDate }]);
@@ -20,19 +23,25 @@ const TodoApp = () => {
     setTodoTime("");
     setTodoDate("");
     setIsShowing(false);
+    setIsEditing(false);
+    setEditingIndex(null);
   };
+
   const handleTextChange = (e) => {
     setTodoText(e.target.value);
     validateForm();
   };
+
   const handleTimeChange = (e) => {
     setTodoTime(e.target.value);
     validateForm();
   };
+
   const handleDateChange = (e) => {
     setTodoDate(e.target.value);
     validateForm();
   };
+
   const validateForm = () => {
     const isTextEmpty = todoText.trim() === "";
     const isDateEmpty = todoDate === "";
@@ -40,9 +49,34 @@ const TodoApp = () => {
 
     setIsFormValid(!isTextEmpty && !isDateEmpty && !isTimeEmpty);
   };
+
   useEffect(() => {
     validateForm();
   }, [todoText, todoDate, todoTime]);
+
+  const handleSaveEdit = (todoText, todoTime, todoDate, index) => {
+    setTodos((prevTodos) => {
+      const newTodos = [...prevTodos];
+      newTodos[index] = { todoText, todoTime, todoDate };
+      return newTodos;
+    });
+    setTodoText("");
+    setTodoTime("");
+    setTodoDate("");
+    setIsShowing(false);
+    setIsEditing(false);
+    setEditingIndex(null);
+  };
+
+  const startEditing = (index) => {
+    setIsEditing(true);
+    setEditingIndex(index);
+    const todo = todos[index];
+    setTodoText(todo.todoText);
+    setTodoTime(todo.todoTime);
+    setTodoDate(todo.todoDate);
+    setIsShowing(true);
+  };
 
   return (
     <>
@@ -51,7 +85,7 @@ const TodoApp = () => {
         <hr />
         <br />
         {todos.length === 0 ? (
-          <p>Todo list is empty please add something</p>
+          <p>Todo list is empty, please add something</p>
         ) : (
           <div className={styles.itemContainer}>
             {todos.map((item, i) => {
@@ -64,7 +98,12 @@ const TodoApp = () => {
                   todoDate={item.todoDate}
                   todos={todos}
                   setTodos={setTodos}
-                ></TodoItem>
+                  setIsShowing={setIsShowing}
+                  isShowing={isShowing}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  startEditing={startEditing}
+                />
               );
             })}
           </div>
@@ -82,7 +121,11 @@ const TodoApp = () => {
             todoText={todoText}
             todoTime={todoTime}
             isFormValid={isFormValid}
-          ></Addtodo>
+            handleSaveEdit={() =>
+              handleSaveEdit(todoText, todoTime, todoDate, editingIndex)
+            }
+            isEditing={isEditing}
+          />
         </footer>
       </main>
     </>
