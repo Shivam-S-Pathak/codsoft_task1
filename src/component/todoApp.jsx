@@ -12,6 +12,7 @@ const TodoApp = () => {
   const [todoTime, setTodoTime] = useState("");
   const [todoDate, setTodoDate] = useState("");
   const [todos, setTodos] = useState([]);
+  const [checkedStatus, setCheckedStatus] = useState([]);
 
   const handleClick = () => {
     setIsShowing(!isShowing);
@@ -19,6 +20,7 @@ const TodoApp = () => {
 
   const handleSubmit = () => {
     setTodos([...todos, { todoText, todoTime, todoDate }]);
+    setCheckedStatus([...checkedStatus, false]);
     setTodoText("");
     setTodoTime("");
     setTodoDate("");
@@ -78,6 +80,21 @@ const TodoApp = () => {
     setIsShowing(true);
   };
 
+  const handleCheckboxChange = (index) => {
+    setCheckedStatus((prevCheckedStatus) => {
+      const newCheckedStatus = [...prevCheckedStatus];
+      newCheckedStatus[index] = !newCheckedStatus[index];
+      return newCheckedStatus;
+    });
+  };
+
+  const handleDelete = (index) => {
+    setTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+    setCheckedStatus((prevCheckedStatus) =>
+      prevCheckedStatus.filter((_, i) => i !== index)
+    );
+  };
+
   return (
     <>
       <main className={styles.appContainer}>
@@ -88,24 +105,25 @@ const TodoApp = () => {
           <p>Todo list is empty, please add something</p>
         ) : (
           <div className={styles.itemContainer}>
-            {todos.map((item, i) => {
-              return (
-                <TodoItem
-                  key={i}
-                  index={i}
-                  todoText={item.todoText}
-                  todoTime={item.todoTime}
-                  todoDate={item.todoDate}
-                  todos={todos}
-                  setTodos={setTodos}
-                  setIsShowing={setIsShowing}
-                  isShowing={isShowing}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  startEditing={startEditing}
-                />
-              );
-            })}
+            {todos.map((item, i) => (
+              <TodoItem
+                key={i}
+                index={i}
+                todoText={item.todoText}
+                todoTime={item.todoTime}
+                todoDate={item.todoDate}
+                todos={todos}
+                setTodos={setTodos}
+                setIsShowing={setIsShowing}
+                isShowing={isShowing}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                startEditing={startEditing}
+                isChecked={checkedStatus[i]}
+                handleCheckboxChange={() => handleCheckboxChange(i)}
+                handleDelete={() => handleDelete(i)}
+              />
+            ))}
           </div>
         )}
 
